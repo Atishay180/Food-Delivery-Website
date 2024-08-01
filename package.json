@@ -14,5 +14,8 @@
     "js"
   ],
   "author": "Atishay Jain",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-router-dom": "^6.25.1"
+  }
 }

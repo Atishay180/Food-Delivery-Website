@@ -1,1 +1,0 @@
-"a compelete food delivery application using MERN"

@@ -1,3 +1,20 @@
+import React from 'react'
+
+const PlaceOrder = () => {
+  return (
+    <div>
+      
+    </div>
+  )
+}
+
+export default PlaceOrder
+
+
+
+
+
+
 // import React, { useContext, useEffect, useState } from 'react'
 // import './PlaceOrder.css'
 // import { StoreContext } from '../../context/StoreContext'

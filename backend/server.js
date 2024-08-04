@@ -5,7 +5,7 @@ import foodRouter from "./routes/food.routes.js"
 import dotenv from "dotenv"
 
 dotenv.config({
-    path: './.env'
+    path: `./.env`
 })
 
 //app config

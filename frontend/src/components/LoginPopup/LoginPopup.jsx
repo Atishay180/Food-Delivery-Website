@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import './LoginPopup.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
-// import axios from 'axios'
+import axios from 'axios'
 // import { toast } from 'react-toastify'
 
 const LoginPopup = ({ setShowLogin }) => {
@@ -40,7 +40,8 @@ const LoginPopup = ({ setShowLogin }) => {
             setShowLogin(false)
         }
         else {
-            toast.error(response.data.message)
+            // toast.error(response.data.message)
+            alert(response.data.message)
         }
     }
 
@@ -48,7 +49,7 @@ const LoginPopup = ({ setShowLogin }) => {
         <div className='login-popup'>
             <form onSubmit={onLogin} className="login-popup-container">
                 <div className="login-popup-title">
-                    <h2>{currState}</h2> 
+                    <h2>{currState}</h2>
                     <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
                 </div>
                 <div className="login-popup-inputs">

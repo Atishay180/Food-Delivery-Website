@@ -4,14 +4,23 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext';
 
 const FoodItem = ({ image, name, price, desc, id }) => {
-
     const [itemCount, setItemCount] = useState(0);
     const { cartItems, addToCart, removeFromCart, url, currency } = useContext(StoreContext);
+
+    // State to track if full description is shown
+    const [isFullDescShown, setIsFullDescShown] = useState(false);
+
+    // Function to toggle description
+    const toggleDescription = () => {
+        setIsFullDescShown(!isFullDescShown);
+    };
 
     return (
         <div className='food-item'>
             <div className='food-item-img-container'>
-                <img className='food-item-image' src={url + "/images/" + image} alt="" />
+                <span className='food-item-img-span'>
+                    <img className='food-item-img' src={url + "/images/" + image} alt="" />
+                </span>
                 {!cartItems[id]
                     ? <img className='add' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />
                     : <div className="food-item-counter">
@@ -27,7 +36,12 @@ const FoodItem = ({ image, name, price, desc, id }) => {
                 <div className="food-item-name-rating">
                     <p>{name}</p> <img src={assets.rating_starts} alt="" />
                 </div>
-                <p className="food-item-desc">{desc}</p>
+                <p className={`food-item-desc ${isFullDescShown ? 'expanded' : 'collapsed'}`}>
+                    {desc}
+                </p>
+                <button onClick={toggleDescription} className="toggle-desc-button">
+                    {isFullDescShown ? 'See Less' : 'See More'}
+                </button>
                 <p className="food-item-price">{currency}{price}</p>
             </div>
         </div>

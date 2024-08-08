@@ -56,7 +56,7 @@ const placeOrder = async (req, res) => {
 
 
     } catch (error) {
-        console.log("Cannot Process the payment");
+        console.log("Cannot process the payment");
         res.json({ success: false, message: "Cannot Process the payment" })
     }
 }
@@ -77,8 +77,8 @@ const verifyOrder = async (req, res) => {
         }
     } catch (error) {
 
-        console.log("Error while payment");
-        res.json({success: false, message: "Error while payment"})
+        console.log("Error while making payment");
+        res.json({success: false, message: "Error while making payment"})
     }
 }
 
@@ -90,8 +90,8 @@ const userOrders = async (req, res) => {
 
         res.json({success: true, data: orders})
     } catch (error) {
-        console.log(error);
-        res.json({success: false, message: "Error on user orders"})
+        console.log("Error while fetching user orders");
+        res.json({success: false, message: "Error while fetching user orders"})
         
     }
 }
@@ -102,7 +102,7 @@ const listOrders =  async (req, res) => {
         const orders = await Order.find({})
         res.json({success: true, data: orders})
     } catch (error) {
-        console.log(error);
+        console.log("Error while listing the orders");
         res.json({success: false, message: "Error while listing the orders"})
     }
 }
@@ -119,8 +119,8 @@ const updateStatus = async (req, res) => {
         )
         res.json({success: true, message: "Order status updated successfully"})
     } catch (error) {
-        console.log(error);
-        res.json({success: false, message: "Error"})
+        console.log("Something went wrong while changing order status");
+        res.json({success: false, message: "Something went wrong while changing order status"})
     }
 }
 export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus }

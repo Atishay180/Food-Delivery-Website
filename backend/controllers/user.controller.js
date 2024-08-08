@@ -51,7 +51,7 @@ const registerUser = async (req, res) => {
         return res.json({ success: true, token })
     } catch (error) {
         console.log("User Already exists");
-        res.json({ success: false, message: "Error" })
+        res.json({ success: false, message: "User Already exists" })
     }
 }
 
@@ -76,7 +76,7 @@ const loginUser = async (req, res) => {
         return res.json({ success: true, token })
     } catch (error) {
         console.log("Failed to login");
-        res.json({ success: false, message: "Error" })
+        res.json({ success: false, message: "Failed to login" })
     }
 }
 export { loginUser, registerUser }

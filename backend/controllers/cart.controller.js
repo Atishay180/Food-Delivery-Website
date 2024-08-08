@@ -7,7 +7,7 @@ const addToCart = async (req, res) => {
     try {
         const userId = req.body.userId
         if(!userId){
-            return res.json("Invalid request, please login to continue")
+            return res.json("Unauthorized request, please login to continue")
         }
 
         const userData = await User.findById(userId)
@@ -26,7 +26,7 @@ const addToCart = async (req, res) => {
             {cartData}
         )
 
-        res.json({success: true, message: "Added To Cart"})
+        res.json({success: true, message: "Items added to cart"})
     } catch (error) {
         console.log("Cannot add items to cart");
         res.json({success: false, message: "Cannot add items to cart"})
@@ -53,7 +53,7 @@ const removeFromCart = async (req, res) => {
 
     } catch (error) {
         console.log("Can't remove the item, Please try again");
-        res.json({success: true, message: "Can't remove the item"})
+        res.json({success: true, message: "Can't remove the item, Please try again"})
     }
 }
 

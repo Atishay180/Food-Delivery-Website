@@ -30,6 +30,9 @@
     border-radius: 50%;
     transition: 0.2s;
 }
+.explore-menu-list-item img:hover{
+    transform: scale(1.1);
+}
 .explore-menu-list-item .active{
     border: 4px solid tomato;
     padding: 2px;

@@ -20,10 +20,10 @@ const addFood = async (req, res) => {
         if (!food) {
             throw new ApiError(400, "Error while creating the Food db")
         }
-        return res.json({ success: true, message: "Food Added" })
+        return res.json({ success: true, message: "Dish Added" })
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
+        console.log("Something went wrong, cannot add the dish");
+        res.json({ success: false, message: "Something went wrong, cannot add the dish" })
     }
 }
 
@@ -38,8 +38,8 @@ const listFood = async (req, res) => {
 
         return res.json({ success: true, data: foods })
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
+        console.log("Cannot fetch the food list");
+        res.json({ success: false, message: "Cannot fetch the food list" })
     }
 }
 
@@ -49,7 +49,7 @@ const removeFood = async (req, res) => {
         const foodId = req.body.id
 
         if (!foodId) {
-            throw new ApiError(404, "Cannot find the food")
+            throw new ApiError(404, "Cannot find the dish")
         }
 
         const food = await Food.findById(foodId)
@@ -64,10 +64,10 @@ const removeFood = async (req, res) => {
             throw new ApiError(400, "Can't remove the food items, please try again later")
         }
 
-        return res.json({ success: true, message: "Food Removed" })
+        return res.json({ success: true, message: "Dish removed successfully" })
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Error" })
+        console.log("Error while removing food items");
+        res.json({ success: false, message: "Error while removing food items" })
     }
 }
 

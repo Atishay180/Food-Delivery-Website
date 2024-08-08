@@ -4,7 +4,7 @@ const authMiddleware = async (req, res, next) => {
     const { token } = req.headers;
 
     if(!token) {
-        return res.json({success: false, message: "Not Authorized, Please Login Again"})
+        return res.json({success: false, message: "Not authorized, Please login to continue"})
     }
 
     try {
@@ -12,8 +12,8 @@ const authMiddleware = async (req, res, next) => {
         req.body.userId = token_decode.id;
         next();
     } catch (error) {
-        console.log("Cannot get the token");
-        res.json({success: false, message: "Cannot get the token"})
+        console.log("Cannot find the user, Please register to continue");
+        res.json({success: false, message: "Cannot find the user, Please register to continue"})
     }
 }
 

@@ -32,6 +32,11 @@
 position: relative;
 }
 
+.navbar-search-icon:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
 .navbar-search-icon .dot{
     position: absolute;
     min-width: 10px;
@@ -59,6 +64,11 @@ position: relative;
 
 .navbar-profile{
     position: relative;
+
+}
+.navbar-profile:hover{
+    transform: scale(1.1);
+    cursor: pointer;
 
 }
 .navbar-profile-dropdown{

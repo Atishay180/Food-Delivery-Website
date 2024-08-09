@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
 
         const token = createToken(newUser._id)
 
-        return res.json({ success: true, token })
+        return res.json({ success: true, token, message: "Registered successfully, explore wide range of food with its authencity and taste" })
     } catch (error) {
         console.log("User Already exists");
         res.json({ success: false, message: "User Already exists" })
@@ -73,7 +73,7 @@ const loginUser = async (req, res) => {
 
         const token = createToken(user._id)
 
-        return res.json({ success: true, token })
+        return res.json({ success: true, token, message: `Welcome back! ${user.name}` })
     } catch (error) {
         console.log("Failed to login");
         res.json({ success: false, message: "Failed to login" })

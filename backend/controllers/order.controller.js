@@ -111,13 +111,13 @@ const listOrders =  async (req, res) => {
 const updateStatus = async (req, res) => {
     try {
         const orderId = req.body.orderId
-        await Order.findByIdAndUpdate(
+        const order = await Order.findByIdAndUpdate(
             orderId,
             {
                 status: req.body.status
             }
         )
-        res.json({success: true, message: "Order status updated successfully"})
+        res.json({success: true, message: `Your Order is ${order.status}`})
     } catch (error) {
         console.log("Something went wrong while changing order status");
         res.json({success: false, message: "Something went wrong while changing order status"})

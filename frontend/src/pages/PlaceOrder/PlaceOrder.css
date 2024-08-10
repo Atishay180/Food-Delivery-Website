@@ -39,6 +39,10 @@
     border-radius: 4px;
     cursor: pointer;
 }
+.place-order-btn{
+    background-color: rgb(255, 126, 103);
+    pointer-events: none;
+}
 .payment{
     display: flex;
     flex-direction: column;
@@ -59,8 +63,11 @@
     min-width: 300px;
     cursor: pointer;
 }
+.payment .payment-btn-color{
+    background-color: #fcb9a0;
+}
 .payment .payment-option:hover{
-    background-color:  #ffe7de;
+    background-color: #ffe7de;
 }
 
 @media (max-width:700px) {

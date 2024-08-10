@@ -61,6 +61,34 @@ const placeOrder = async (req, res) => {
     }
 }
 
+const placeOrderCod = async (req, res) => {
+    try {
+        const { userId, items, amount, address } = req.body
+
+        const newOrder = await Order.create({
+            userId,
+            items,
+            amount,
+            address
+        })
+
+        if(!newOrder){
+            return res.json({success: false, message: "Error while placing the order in Cash On Delivery! please try again"})
+        }
+
+        const userCart = await Order.findByIdAndUpdate(
+            userId,
+            {cartData: {}}
+        )
+
+        return res.json({success: true, message: "Order placed successfully, Your food is preparing"})
+
+
+    } catch (error) {
+        return res.json({success: false, message: "Error while placing the order, please try again"})
+    }
+}
+
 const verifyOrder = async (req, res) => {
     const { orderId, success } = req.body;
     try {
@@ -123,4 +151,4 @@ const updateStatus = async (req, res) => {
         res.json({success: false, message: "Something went wrong while changing order status"})
     }
 }
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus }
+export { placeOrder, placeOrderCod, verifyOrder, userOrders, listOrders, updateStatus }

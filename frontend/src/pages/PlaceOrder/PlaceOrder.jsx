@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const PlaceOrder = () => {
 
-  const [payment, setPayment] = useState("cod")
+  const [payment, setPayment] = useState("")
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -71,19 +71,20 @@ const PlaceOrder = () => {
     }
 
     else {
-      let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
-      if (response.data.success) {
-        navigate("/myorders")
-        toast.success(response.data.message)
-        setCartItems({});
+      if (window.confirm("Are you sure want to place order via cash on delivery")) {
+        let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
+        if (response.data.success) {
+          navigate("/myorders")
+          toast.success(response.data.message)
+          setCartItems({});
+        }
+        else {
+          toast.error("Something Went Wrong")
+        }
       }
-      else {
-        toast.error("Something Went Wrong")
-      }
-    }    
-
+    }
   }
-
+  
   useEffect(() => {
     if (!token) {
       toast.error("To place an order sign in first")
@@ -128,16 +129,16 @@ const PlaceOrder = () => {
         </div>
         <div className="payment">
           <h2>Payment Method</h2>
-          <div onClick={() => setPayment("cod")} className="payment-option">
+          <div onClick={() => setPayment("cod")} className={`payment-option ${payment === "cod" ? "payment-btn-color" : ""}`}>
             <img src={payment === "cod" ? assets.checked : assets.un_checked} alt="" />
             <p>COD ( Cash on delivery )</p>
           </div>
-          <div onClick={() => setPayment("stripe")} className="payment-option">
+          <div onClick={() => setPayment("stripe")} className={`payment-option ${payment === "stripe" ? "payment-btn-color" : ""}`}>
             <img src={payment === "stripe" ? assets.checked : assets.un_checked} alt="" />
             <p>Stripe ( Credit / Debit )</p>
           </div>
         </div>
-        <button className='place-order-submit' type='submit'>{payment === "cod" ? "Place Order" : "Proceed To Payment"}</button>
+        <button className={`place-order-submit ${payment === "" ? "place-order-btn ": ""}`} type='submit'>{payment === "cod" ? "Place Order Via COD" : "Proceed To Payment"}</button>
       </div>
     </form>
   )

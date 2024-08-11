@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react'
 import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext';
+import Loader from '../Loader/Loader';
 
 const FoodItem = ({ image, name, price, desc, id }) => {
-    const [itemCount, setItemCount] = useState(0);
-    const { cartItems, addToCart, removeFromCart, url, currency } = useContext(StoreContext);
+    // const [itemCount, setItemCount] = useState(0);
+    const { cartItems, addToCart, removeFromCart, url, currency, loader } = useContext(StoreContext);
 
     // State to track if full description is shown
     const [isFullDescShown, setIsFullDescShown] = useState(false);
@@ -14,6 +15,10 @@ const FoodItem = ({ image, name, price, desc, id }) => {
     const toggleDescription = () => {
         setIsFullDescShown(!isFullDescShown);
     };
+
+    if(loader){
+        return <Loader />
+    }
 
     return (
         <div className='food-item'>

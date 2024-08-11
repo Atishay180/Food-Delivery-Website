@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
 import './ExploreMenu.css'
 import { StoreContext } from '../../context/StoreContext'
+import Loader from '../Loader/Loader';
 
 const ExploreMenu = ({ category, setCategory }) => {
 
-    const { menu_list } = useContext(StoreContext);
+    const { menu_list, loader } = useContext(StoreContext);
+
+    if(loader){
+        return <Loader />
+    }
 
     return (
         <div className='explore-menu' id='explore-menu'>

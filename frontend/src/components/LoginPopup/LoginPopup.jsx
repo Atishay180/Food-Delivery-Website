@@ -4,11 +4,12 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 import {toast} from "react-toastify"
+import Loader from '../Loader/Loader'
 // import { toast } from 'react-toastify'
 
 const LoginPopup = ({ setShowLogin }) => {
 
-    const { setToken, url, loadCartData } = useContext(StoreContext)
+    const { setToken, url, loadCartData, loader, setLoader } = useContext(StoreContext)
     const [currState, setCurrState] = useState("Sign Up");
 
     const [data, setData] = useState({
@@ -33,7 +34,9 @@ const LoginPopup = ({ setShowLogin }) => {
         else {
             new_url += "/api/user/register"
         }
+        setLoader(true)
         const response = await axios.post(new_url, data);
+        setLoader(false)
         if (response.data.success) {
             setToken(response.data.token)
             localStorage.setItem("token", response.data.token)
@@ -46,6 +49,10 @@ const LoginPopup = ({ setShowLogin }) => {
             // toast.error(response.data.message)
             alert(response.data.message)
         }
+    }
+
+    if(loader){
+        return <Loader />
     }
 
     return (

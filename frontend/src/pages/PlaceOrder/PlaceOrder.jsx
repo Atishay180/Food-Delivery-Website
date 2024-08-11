@@ -5,6 +5,7 @@ import { assets } from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Loader from '../../components/Loader/Loader';
 
 const PlaceOrder = () => {
 
@@ -29,7 +30,9 @@ const PlaceOrder = () => {
     url,
     setCartItems,
     currency,
-    deliveryCharge
+    deliveryCharge,
+    loader,
+    setLoader
   } = useContext(StoreContext);
 
   const navigate = useNavigate();
@@ -60,7 +63,9 @@ const PlaceOrder = () => {
     }
 
     if (payment === "stripe") {
+      setLoader(true);
       let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+      setLoader(false)
       if (response.data.success) {
         const { session_url } = response.data;
         window.location.replace(session_url);
@@ -72,7 +77,9 @@ const PlaceOrder = () => {
 
     else {
       if (window.confirm("Are you sure want to place order via cash on delivery")) {
+        setLoader(true)
         let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
+        setLoader(false)
         if (response.data.success) {
           navigate("/myorders")
           toast.success(response.data.message)
@@ -94,6 +101,10 @@ const PlaceOrder = () => {
       navigate('/cart')
     }
   }, [token])
+
+  if(loader){
+    return <Loader />
+  }
 
   return (
     <form onSubmit={placeOrder} className='place-order'>

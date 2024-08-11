@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { menu_list } from "../assets/assets";
 import axios from "axios";
 export const StoreContext = createContext(null);
+import {toast} from "react-toastify"
 
 const StoreContextProvider = (props) => {
 
@@ -9,10 +10,15 @@ const StoreContextProvider = (props) => {
     const [food_list, setFoodList] = useState([]);
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
+    const [loader, setLoader] = useState(false);
     const currency = "₹";
     const deliveryCharge = 50;
 
     const addToCart = async (itemId) => {
+        if(cartItems[itemId] >= 8){
+            toast.info("You can't add more than 8 of the same item to the cart");
+            return ;
+        }
         if (!cartItems[itemId]) {
             setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
         }
@@ -48,23 +54,31 @@ const StoreContextProvider = (props) => {
     }
 
     const fetchFoodList = async () => {
+        setLoader(true);
         const response = await axios.get(url + "/api/food/list");
         setFoodList(response.data.data)
+        setLoader(false);
     }
 
     const loadCartData = async (token) => {
+        setLoader(true);
         const response = await axios.post(url + "/api/cart/get", {}, { headers: token });
         setCartItems(response.data.cartData);
+        setLoader(false)
     }
 
     useEffect(() => {
         async function loadData() {
+            setLoader(true)
             await fetchFoodList();
+            setLoader(false)
 
             if (localStorage.getItem("token")) {
                 setToken(localStorage.getItem("token"))
                 
+                setLoader(true);
                 await loadCartData({ token: localStorage.getItem("token") })
+                setLoader(false);
             }
         }
 
@@ -84,7 +98,9 @@ const StoreContextProvider = (props) => {
         loadCartData,
         setCartItems,
         currency,
-        deliveryCharge
+        deliveryCharge,
+        loader,
+        setLoader
     };
 
     return (

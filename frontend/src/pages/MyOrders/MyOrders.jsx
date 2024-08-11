@@ -3,15 +3,18 @@ import './MyOrders.css'
 import axios from 'axios'
 import { StoreContext } from '../../context/StoreContext';
 import { assets } from '../../assets/assets';
+import Loader from '../../components/Loader/Loader';
 
 const MyOrders = () => {
 
     const [data, setData] = useState([]);
-    const { url, token, currency } = useContext(StoreContext);
+    const { url, token, currency, loader, setLoader } = useContext(StoreContext);
 
     const fetchOrders = async () => {
+        setLoader(true);
         const response = await axios.post(url + "/api/order/userorders", {}, { headers: { token } });
         setData(response.data.data.reverse())
+        setLoader(false);
     }
 
     useEffect(() => {
@@ -19,6 +22,10 @@ const MyOrders = () => {
             fetchOrders();
         }
     }, [token])
+
+    if(loader){
+        return <Loader />
+    }
 
     return (
         <div className='my-orders'>

@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react'
 import './Menu.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
+import Loader from '../../components/Loader/Loader'
 
 
 
 const Menu = () => {
-    const { food_list, cartItems, addToCart, removeFromCart, url, currency, menu_list } = useContext(StoreContext);
+    const { food_list, cartItems, addToCart, removeFromCart, url, currency, menu_list, loader } = useContext(StoreContext);
 
     //sort functionality
     const [category, setCategory] = useState("All")
@@ -27,6 +28,9 @@ const Menu = () => {
         setIsFullDescShown(!isFullDescShown);
     };
 
+    if(loader){
+        return <Loader />
+    }
 
     return (
         <div className='food-display' id='food-display'>

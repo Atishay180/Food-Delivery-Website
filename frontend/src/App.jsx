@@ -11,6 +11,7 @@ import Verify from './pages/Verify/Verify'
 import MyOrders from './pages/MyOrders/MyOrders'
 import Footer from './components/Footer/Footer'
 import Menu from './pages/Menu/Menu'
+import About from './pages/About/About'
 
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/menu' element={<Menu />} />
+          <Route path='/about' element={<About />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<PlaceOrder />} />
           <Route path='/verify' element={<Verify />} />

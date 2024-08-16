@@ -1,0 +1,144 @@
+.about-wrapper {
+  font-family: 'Arial', sans-serif;
+  color: #444;
+  animation: fadeIn 1s ease-in-out; 
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); 
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+
+.about-header {
+  background: url('/header_img.png') no-repeat;
+  background-size: cover;
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  animation: fadeInHeader 1s ease-in-out;
+}
+
+@keyframes fadeInHeader {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1); 
+  }
+}
+
+.about-header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.about-header p {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.about-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out; 
+}
+
+.about-section.reverse {
+  flex-direction: column;
+}
+
+.about-content {
+  max-width: 100%;
+  margin: 20px;
+}
+
+.about-content h2 {
+  font-size: 2.5rem;
+  color: rgb(255, 76, 36);
+  margin-bottom: 20px;
+}
+
+.about-content p, .about-content ul {
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+
+.about-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.about-content ul li {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.about-content ul li strong {
+  color: rgb(255, 76, 36);
+}
+
+.about-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out; 
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .about-section {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .about-section.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .about-content {
+    max-width: 50%;
+    margin-bottom: 0;
+  }
+
+  .about-image {
+    text-align: center;
+  }
+
+  .about-image img {
+    max-width: 100%;
+    width: 400px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-header h1 {
+    font-size: 4rem;
+  }
+
+  .about-header p {
+    font-size: 1.6rem;
+  }
+
+  .about-content h2 {
+    font-size: 3rem;
+  }
+
+  .about-content p, .about-content ul {
+    font-size: 1.4rem;
+  }
+}

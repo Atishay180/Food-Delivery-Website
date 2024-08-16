@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Footer.css'
 import { assets } from '../../assets/assets'
+import { NavLink } from "react-router-dom"
+import { StoreContext } from '../../context/StoreContext'
 
 const Footer = () => {
+    const { setMenu } = useContext(StoreContext)
+
     return (
         <div className='footer' id='footer'>
             <div className="footer-content">
@@ -18,8 +22,8 @@ const Footer = () => {
                 <div className="footer-content-center">
                     <h2>COMPANY</h2>
                     <ul>
-                        <li>Home</li>
-                        <li>About us</li>
+                        <li><NavLink onClick={() => setMenu("home")} to="/">Home</NavLink></li>
+                        <li><NavLink onClick={() => setMenu("about")} to="about">About Us</NavLink></li>
                         <li>Delivery</li>
                         <li>Privacy policy</li>
                     </ul>
@@ -33,7 +37,7 @@ const Footer = () => {
                 </div>
             </div>
             <hr />
-            <p className="footer-copyright">Copyright 2024 © Tomato.com - All Right Reserved.</p>
+            <p className="footer-copyright">Copyright <span>{new Date(Date.now()).getFullYear()}</span> © Tomato.com - All Right Reserved.</p>
         </div>
     )
 }

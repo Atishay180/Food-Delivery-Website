@@ -11,6 +11,7 @@ const StoreContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
     const [loader, setLoader] = useState(false);
+    const [menu, setMenu] = useState("home");
     const currency = "₹";
     const deliveryCharge = 50;
 
@@ -100,7 +101,9 @@ const StoreContextProvider = (props) => {
         currency,
         deliveryCharge,
         loader,
-        setLoader
+        setLoader,
+        menu,
+        setMenu
     };
 
     return (

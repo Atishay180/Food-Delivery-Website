@@ -63,16 +63,18 @@ const PlaceOrder = () => {
     }
 
     if (payment === "stripe") {
-      setLoader(true);
-      let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
-      setLoader(false)
-      if (response.data.success) {
-        const { session_url } = response.data;
-        window.location.replace(session_url);
-      }
-      else {
-        toast.error("Something Went Wrong")
-      }
+      // setLoader(true);
+      // let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+      // setLoader(false)
+      // if (response.data.success) {
+      //   const { session_url } = response.data;
+      //   window.location.replace(session_url);
+      // }
+      // else {
+      //   toast.error("Something Went Wrong")
+      // }
+      toast.error("Sorry currently we are accepting only cash on delivery")
+      return;
     }
 
     else {

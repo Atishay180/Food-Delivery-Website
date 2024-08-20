@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './Add.css'
 import { assets, url } from '../../assets/assets';
 import axios from 'axios';
@@ -53,6 +53,7 @@ const Add = () => {
 
     return (
         <div className='add'>
+            <h2 className='header'>Add Food Items</h2>
             <form className='flex-col' onSubmit={onSubmitHandler}>
                 <div className='add-img-upload flex-col'>
                     <p>Upload image</p>

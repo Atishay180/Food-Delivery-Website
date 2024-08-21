@@ -1,0 +1,10 @@
+# Exported from Render on 2024-08-21T15:36:01Z
+services:
+- type: web
+  name: Food-Ecommerce-Website-Frontend
+  runtime: static
+  repo: https://github.com/Atishay180/Food-Ecommerce-Website
+  buildCommand: npm run build
+  staticPublishPath: dist
+  rootDir: frontend
+version: "1"

@@ -13,7 +13,7 @@ services:
   - key: PORT
     sync: false
   region: oregon
-  buildCommand: cd backend && npm install
-  startCommand: cd backend && npm run server
+  buildCommand: npm install
+  startCommand: npm start
   rootDir: backend
 version: "1"

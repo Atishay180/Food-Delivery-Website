@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { menu_list } from "../assets/assets";
 import axios from "axios";
 export const StoreContext = createContext(null);
-import {toast} from "react-toastify"
+import { toast } from "react-toastify"
 
 const StoreContextProvider = (props) => {
 
@@ -16,9 +16,9 @@ const StoreContextProvider = (props) => {
     const deliveryCharge = 50;
 
     const addToCart = async (itemId) => {
-        if(cartItems[itemId] >= 8){
+        if (cartItems[itemId] >= 8) {
             toast.info("You can't add more than 8 of the same item to the cart");
-            return ;
+            return;
         }
         if (!cartItems[itemId]) {
             setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
@@ -34,7 +34,14 @@ const StoreContextProvider = (props) => {
     const removeFromCart = async (itemId) => {
         setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
         if (token) {
-            await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+            setLoader(true)
+            try {
+                await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+            } catch (error) {
+                toast.error(error.response.data.success || "Cannot remove the items from cart")
+            } finally {
+                setLoader(false)
+            }
         }
     }
 
@@ -47,7 +54,7 @@ const StoreContextProvider = (props) => {
                     totalAmount += itemInfo.price * cartItems[item];
                 }
             } catch (error) {
-
+                toast.error(error.response.data.success || "Error in fetching cart")
             }
 
         }
@@ -76,7 +83,7 @@ const StoreContextProvider = (props) => {
 
             if (localStorage.getItem("token")) {
                 setToken(localStorage.getItem("token"))
-                
+
                 setLoader(true);
                 await loadCartData({ token: localStorage.getItem("token") })
                 setLoader(false);

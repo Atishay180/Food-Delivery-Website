@@ -9,7 +9,7 @@ const Cart = () => {
   const { cartItems, food_list, removeFromCart, getTotalCartAmount, url, currency, deliveryCharge, loader } = useContext(StoreContext);
   const navigate = useNavigate();
 
-  if(loader){
+  if (loader) {
     return <Loader />
   }
 

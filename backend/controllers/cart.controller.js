@@ -53,7 +53,7 @@ const removeFromCart = async (req, res) => {
 
     } catch (error) {
         console.log("Can't remove the item, Please try again");
-        res.json({success: true, message: "Can't remove the item, Please try again"})
+        res.json({success: false, message: "Can't remove the item, Please try again"})
     }
 }
 

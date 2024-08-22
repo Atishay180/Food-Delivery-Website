@@ -48,7 +48,7 @@ const LoginPopup = ({ setShowLogin }) => {
                 toast.error(response.data.message)
             }
         } catch (error) {
-            toast.error(response.data.message || "Error while login")
+            toast.error(error.response.data.message || "Error while login")
         } finally {
             setLoader(false)
         }

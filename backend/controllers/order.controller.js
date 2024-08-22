@@ -5,7 +5,7 @@ import { User } from "../models/user.model.js"
 //placing user order for frontend
 const placeOrder = async (req, res) => {
 
-    const frontend_url = "http://localhost:5173"
+    const frontend_url = process.env.FRONTEND_URL
 
     try {
         const { userId, items, amount, address } = req.body
@@ -81,7 +81,7 @@ const placeOrderCod = async (req, res) => {
             {cartData: {}}
         )
 
-        return res.json({success: true, message: "Order placed successfully, Your food is preparing"})
+        return res.json({success: true, userCart, message: "Order placed successfully, Your food is preparing"})
 
 
     } catch (error) {

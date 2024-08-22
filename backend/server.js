@@ -35,6 +35,3 @@ app.get("/", (req, res) => {
 app.listen(process.env.PORT || 4000, () => {
     console.log(`Service is running at port : ${process.env.PORT}`);
 })
-
-
-//mongodb+srv://atishayjain8807:8807jain@cluster0.b28bhtq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

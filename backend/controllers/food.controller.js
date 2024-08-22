@@ -1,5 +1,4 @@
 import { Food } from "../models/food.model.js"
-import { ApiError } from "../utils/ApiError.js"
 import fs from "fs"
 
 //add food item
@@ -18,7 +17,7 @@ const addFood = async (req, res) => {
         })
 
         if (!food) {
-            throw new ApiError(400, "Error while creating the Food db")
+            return res.json({ success: false, message: "Error while adding the food" })
         }
         return res.json({ success: true, message: "Dish Added" })
     } catch (error) {
@@ -33,7 +32,7 @@ const listFood = async (req, res) => {
         const foods = await Food.find({});
 
         if (!foods) {
-            throw new ApiError(400, "Error in fetching the food list")
+            return res.json({ success: false, message: "Error in fetching the food list" })
         }
 
         return res.json({ success: true, data: foods })
@@ -49,19 +48,19 @@ const removeFood = async (req, res) => {
         const foodId = req.body.id
 
         if (!foodId) {
-            throw new ApiError(404, "Cannot find the dish")
+            res.json({ success: false, message: "Cannot find the dish" })
         }
 
         const food = await Food.findById(foodId)
         if (!food) {
-            throw new ApiError(404, "Can't find the food item, please try again later")
+            res.json({ success: false, message: "Can't find the food item, please try again later" })
         }
         fs.unlink(`uploads/${food.image}`, () => { })  //delete image from the folder
 
         const removeFood = await Food.findByIdAndDelete(foodId)
 
         if (!removeFood) {
-            throw new ApiError(400, "Can't remove the food items, please try again later")
+            res.json({ success: false, message: "Can't remove the food items, please try again later" })
         }
 
         return res.json({ success: true, message: "Dish removed successfully" })

@@ -1,13 +1,13 @@
 import { User } from "../models/user.model.js"
 
-
-
 //add items to cart
 const addToCart = async (req, res) => {
     try {
         const userId = req.body.userId
-        if(!userId){
-            return res.json("Unauthorized request, please login to continue")
+        if (!userId) {
+            return res
+                .status(401)
+                .json("Unauthorized request, please login to continue")
         }
 
         const userData = await User.findById(userId)
@@ -23,13 +23,17 @@ const addToCart = async (req, res) => {
         }
 
         await User.findByIdAndUpdate(userId,
-            {cartData}
+            { cartData }
         )
 
-        res.json({success: true, message: "Items added to cart"})
+        return res
+            .status(200)
+            .json({ success: true, message: "Items added to cart" })
     } catch (error) {
-        console.log("Cannot add items to cart");
-        res.json({success: false, message: "Cannot add items to cart"})
+        console.log("Error in addToCart controller: ", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Cannot add items to cart" })
     }
 }
 
@@ -40,20 +44,24 @@ const removeFromCart = async (req, res) => {
         let userData = await User.findById(userId)
         let cartData = await userData.cartData
 
-        if(cartData[req.body.itemId] > 0){
-            cartData[req.body.itemId] -= 1;     //decrement
+        if (cartData[req.body.itemId] > 0) {
+            cartData[req.body.itemId] -= 1;
         }
 
         await User.findByIdAndUpdate(
             userId,
-            {cartData}
+            { cartData }
         )
 
-        res.json({success: true, message: "Item removed from cart"})
+        return res
+            .status(200)
+            .json({ success: true, message: "Item removed from cart" })
 
     } catch (error) {
-        console.log("Can't remove the item, Please try again");
-        res.json({success: false, message: "Can't remove the item, Please try again"})
+        console.log("Error in removeFromCart controller: ", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Can't remove the item, Please try again" })
     }
 }
 
@@ -65,10 +73,14 @@ const getCart = async (req, res) => {
 
         const cartData = await userData.cartData;
 
-        res.json({success: true, cartData})
+        return res
+            .status(200)
+            .json({ success: true, cartData })
     } catch (error) {
         console.log("Cannot get the cart data");
-        res.json({success: false, message: "Cannot get the cart data"})
+        return res
+            .status(400)
+            .json({ success: false, message: "Cannot get the cart data" })
     }
 }
 

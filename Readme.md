@@ -25,7 +25,7 @@ This repository contains the frontend, backend and admin panel for the Food Ecco
     - Add your environment variables to the `.env` file.
 
 4. **Start the development server**:
-    npm run server
+    npm run dev
 
 ### Frontend
 

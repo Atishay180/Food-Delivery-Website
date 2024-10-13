@@ -1,28 +1,45 @@
 import { Food } from "../models/food.model.js"
-import fs from "fs"
+import { v2 as cloudinary } from "cloudinary"
 
 //add food item
 const addFood = async (req, res) => {
     try {
-        const image_filename = `${req.file.filename}`
+        const { name, description, price, category, img } = req.body
 
-        const { name, description, price, category } = req.body
+        const foodExists = await Food.findOne({ name })
+        if (foodExists) {
+            return res
+                .status(400)
+                .json({ success: false, message: "Food item already exists" })
+        }
+
+        let imgUrl = null
+        if (img) {
+            const uploadedResponse = await cloudinary.uploader.upload(img)
+            imgUrl = uploadedResponse.secure_url
+        }
 
         const food = await Food.create({
             name,
             description,
             price,
             category,
-            image: image_filename
+            image: imgUrl
         })
 
         if (!food) {
-            return res.json({ success: false, message: "Error while adding the food" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Error while adding the food" })
         }
-        return res.json({ success: true, message: "Dish Added" })
+        return res
+            .status(200)
+            .json({ success: true, message: "Dish Added" })
     } catch (error) {
-        console.log("Something went wrong, cannot add the dish");
-        res.json({ success: false, message: "Something went wrong, cannot add the dish" })
+        console.log("Error in addFood controller: ", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Cannot add the food item" })
     }
 }
 
@@ -32,13 +49,19 @@ const listFood = async (req, res) => {
         const foods = await Food.find({});
 
         if (!foods) {
-            return res.json({ success: false, message: "Error in fetching the food list" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Error in fetching the food list" })
         }
 
-        return res.json({ success: true, data: foods })
+        return res
+            .status(200)
+            .json({ success: true, data: foods })
     } catch (error) {
-        console.log("Cannot fetch the food list");
-        res.json({ success: false, message: "Cannot fetch the food list" })
+        console.log("Error in listFood controller: ", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Cannot fetch the food list" })
     }
 }
 
@@ -48,25 +71,46 @@ const removeFood = async (req, res) => {
         const foodId = req.body.id
 
         if (!foodId) {
-            res.json({ success: false, message: "Cannot find the dish" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Cannot find the dish" })
         }
 
         const food = await Food.findById(foodId)
         if (!food) {
-            res.json({ success: false, message: "Can't find the food item, please try again later" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Can't find the food item, please try again later" })
         }
-        fs.unlink(`uploads/${food.image}`, () => { })  //delete image from the folder
+
+        //delete image from cloudinary
+        if (food.image) {
+            const imageId = food.image.split("/").pop().split(".")[0]
+            try {
+                await cloudinary.uploader.destroy(imageId);
+            } catch (err) {
+                return res
+                    .status(400)
+                    .json({ success: false, message: "Error while removing the food items" })
+            }
+        }
 
         const removeFood = await Food.findByIdAndDelete(foodId)
 
         if (!removeFood) {
-            res.json({ success: false, message: "Can't remove the food items, please try again later" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Can't remove the food items, please try again later" })
         }
 
-        return res.json({ success: true, message: "Dish removed successfully" })
+        return res
+            .status(200)
+            .json({ success: true, message: "Dish removed successfully" })
     } catch (error) {
-        console.log("Error while removing food items");
-        res.json({ success: false, message: "Error while removing food items" })
+        console.log("Error in removeFood controller: ", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Error while removing food items" })
     }
 }
 

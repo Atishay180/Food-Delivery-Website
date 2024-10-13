@@ -1,6 +1,10 @@
 .order h3{
     font-size: 30px;
 }
+.order-list{
+    max-height: 100vh;
+    overflow-y: auto;
+}
 .order-item{
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;

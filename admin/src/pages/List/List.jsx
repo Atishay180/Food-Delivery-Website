@@ -46,17 +46,20 @@ const List = () => {
           <b>Price</b>
           <b>Action</b>
         </div>
-        {list.map((item, index) => {
-          return (
-            <div key={index} className='list-table-format'>
-              <img src={`${url}/images/` + item.image} alt="" />
-              <p>{item.name}</p>
-              <p>{item.category}</p>
-              <p>{currency}{item.price}</p>
-              <p className='cursor' onClick={() => removeFood(item._id)}>x</p>
-            </div>
-          )
-        })}
+
+        <div className='list-container'>
+          {list.map((item, index) => {
+            return (
+              <div key={index} className='list-table-format'>
+                <img src={item.image} alt="" />
+                <p>{item.name}</p>
+                <p>{item.category}</p>
+                <p>{currency}{item.price}</p>
+                <p className='cursor' onClick={() => removeFood(item._id)}>x</p>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

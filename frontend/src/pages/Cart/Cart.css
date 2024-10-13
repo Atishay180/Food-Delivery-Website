@@ -33,7 +33,12 @@
     font-size: 12px;
 }
 .cart-items-remove-icon{
+    font-size: 25px;
+    padding-left: 10px;
     cursor: pointer;
+}
+.cart-items-remove-icon:hover{
+    color: tomato;
 }
 .cart-bottom {
     margin-top: 80px;

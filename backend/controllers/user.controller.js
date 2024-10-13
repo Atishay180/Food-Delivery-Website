@@ -13,22 +13,30 @@ const registerUser = async (req, res) => {
 
     try {
         if (name === "" || password === "" || email === "") {
-            res.json({ success: false, message: "All fields are required" })
+            return res
+                .status(400)
+                .json({ success: false, message: "All fields are required" })
         }
 
         const exists = await User.findOne({ email })
 
         if (exists) {
-            res.json({ success: false, message: "User already exists" })
+            return res
+                .status(400)
+                .json({ success: false, message: "User already exists" })
         }
 
         //validate email format & strong password
         if (!validator.isEmail(email)) {
-            res.json({ success: false, message: "Please enter valid email" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Please enter valid email" })
         }
 
         if (password.length < 8) {
-            res.json({ success: false, message: "Please enter a strong password" })
+            return res
+                .status(400)
+                .json({ success: false, message: "Please enter a strong password" })
         }
 
         //hash user password
@@ -42,15 +50,21 @@ const registerUser = async (req, res) => {
         })
 
         if (!newUser) {
-            res.json({ success: false, message: "An error occured while registering the user, please try again " })
+            return res
+                .status(400)
+                .json({ success: false, message: "An error occured while registering the user, please try again " })
         }
 
         const token = createToken(newUser._id)
 
-        return res.json({ success: true, token, message: "Registered successfully, explore wide range of food with its authencity and taste" })
+        return res
+            .status(200)
+            .json({ success: true, token, message: "Registered successfully, explore wide range of food with its authencity and taste" })
     } catch (error) {
-        console.log("User Already exists");
-        res.json({ success: false, message: "User Already exists" })
+        console.log("Error in registerUser controller", error.message);
+        res
+            .status(400)
+            .json({ success: false, message: "User Already exists" })
     }
 }
 
@@ -61,21 +75,29 @@ const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email })
         if (!user) {
-            res.json({ success: false, message: "User does not exist" })
+            return res
+                .status(400)
+                .json({ success: false, message: "User does not exist" })
         }
 
         const isMatched = await bcrypt.compare(password, user.password)
 
         if (!isMatched) {
-            res.json({ success: false, message: "You have entered Invalid Credentials" })
+            return res
+                .status(400)
+                .json({ success: false, message: "You have entered Invalid Credentials" })
         }
 
         const token = createToken(user._id)
 
-        return res.json({ success: true, token, message: `Welcome back! ${user.name}` })
+        return res
+            .status(200)
+            .json({ success: true, token, message: `Welcome back! ${user.name}` })
     } catch (error) {
-        console.log("Failed to login");
-        res.json({ success: false, message: "Failed to login" })
+        console.log("Error in loginUser controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Failed to login" })
     }
 }
 export { loginUser, registerUser }

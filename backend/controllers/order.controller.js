@@ -1,7 +1,6 @@
 import { Order } from "../models/order.model.js"
 import { User } from "../models/user.model.js"
 
-
 //placing user order for frontend
 const placeOrder = async (req, res) => {
 
@@ -52,12 +51,16 @@ const placeOrder = async (req, res) => {
             cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`
         })
 
-        return res.json({ success: true, session_url: session.url })
+        return res
+            .status(200)
+            .json({ success: true, session_url: session.url })
 
 
     } catch (error) {
-        console.log("Cannot process the payment");
-        res.json({ success: false, message: "Cannot Process the payment" })
+        console.log("Error in placeOrder controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Cannot Process the payment" })
     }
 }
 
@@ -72,20 +75,27 @@ const placeOrderCod = async (req, res) => {
             address
         })
 
-        if(!newOrder){
-            return res.json({success: false, message: "Error while placing the order in Cash On Delivery! please try again"})
+        if (!newOrder) {
+            return res
+                .status(400)
+                .json({ success: false, message: "Error while placing the order in Cash On Delivery! please try again" })
         }
 
         const userCart = await Order.findByIdAndUpdate(
             userId,
-            {cartData: {}}
+            { cartData: {} }
         )
 
-        return res.json({success: true, userCart, message: "Order placed successfully, Your food is preparing"})
+        return res
+            .status(200)
+            .json({ success: true, userCart, message: "Order placed successfully, Your food is preparing" })
 
 
     } catch (error) {
-        return res.json({success: false, message: "Error while placing the order, please try again"})
+        console.log("Error in placeOrderCod controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Error while placing the order, please try again" })
     }
 }
 
@@ -97,16 +107,22 @@ const verifyOrder = async (req, res) => {
                 orderId,
                 { payment: true }
             )
-            res.json({ success: true, message: "Paid" })
+            return res
+                .status(200)
+                .json({ success: true, message: "Paid" })
         }
         else {
             await Order.findByIdAndDelete(orderId)
-            res.json({ success: false, message: "Not Paid" })
+            return res
+                .status(200)
+                .json({ success: false, message: "Not Paid" })
         }
     } catch (error) {
 
-        console.log("Error while making payment");
-        res.json({success: false, message: "Error while making payment"})
+        console.log("Error in verifyOrder controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Error while making payment" })
     }
 }
 
@@ -114,24 +130,32 @@ const verifyOrder = async (req, res) => {
 const userOrders = async (req, res) => {
     try {
         const userId = req.body.userId;
-        const orders = await Order.find({userId: userId})
+        const orders = await Order.find({ userId: userId })
 
-        res.json({success: true, data: orders})
+        return res
+            .status(200)
+            .json({ success: true, data: orders })
     } catch (error) {
-        console.log("Error while fetching user orders");
-        res.json({success: false, message: "Error while fetching user orders"})
-        
+        console.log("Error in userOrders controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Error while fetching user orders" })
+
     }
 }
 
 //listing orders for admin panel
-const listOrders =  async (req, res) => {
+const listOrders = async (req, res) => {
     try {
         const orders = await Order.find({})
-        res.json({success: true, data: orders})
+        return res
+            .status(200)
+            .json({ success: true, data: orders })
     } catch (error) {
-        console.log("Error while listing the orders");
-        res.json({success: false, message: "Error while listing the orders"})
+        console.log("Error in listOrders controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Error while listing the orders" })
     }
 }
 
@@ -145,10 +169,14 @@ const updateStatus = async (req, res) => {
                 status: req.body.status
             }
         )
-        res.json({success: true, message: `Your Order is ${order.status}`})
+        return res
+            .status(200)
+            .json({ success: true, message: `Your Order is ${order.status}` })
     } catch (error) {
-        console.log("Something went wrong while changing order status");
-        res.json({success: false, message: "Something went wrong while changing order status"})
+        console.log("Error in updateStatus controller", error.message);
+        return res
+            .status(400)
+            .json({ success: false, message: "Something went wrong while changing order status" })
     }
 }
 export { placeOrder, placeOrderCod, verifyOrder, userOrders, listOrders, updateStatus }

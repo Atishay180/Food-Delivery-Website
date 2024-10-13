@@ -3,6 +3,10 @@
     font-weight: 600;
     padding-bottom: 20px;
 }
+.list-container{
+    max-height: 100vh;
+    overflow-y: auto;
+}
 .list-table-format{
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
@@ -17,6 +21,13 @@
 }
 .list-table-format img{
     width: 50px;
+}
+.list-table-format .cursor{
+    font-size: 25px;
+    padding-left: 10px;
+}
+.list-table-format .cursor:hover{
+    color: tomato;
 }
 @media(max-width:600px){
 

@@ -6,31 +6,56 @@ import { toast } from 'react-toastify';
 
 const Add = () => {
 
-
-    const [image, setImage] = useState(false);
+    const [image, setImage] = useState(null);
     const [data, setData] = useState({
         name: "",
         description: "",
         price: "",
         category: "Salad"
     });
+    const [loading, setLoading] = useState(false);
+
+    const handleImgChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = () => {
+                setImage(reader.result)
+            }
+            reader.readAsDataURL(file)
+        }
+    }
 
     const onSubmitHandler = async (event) => {
+
         event.preventDefault();
 
         if (!image) {
             toast.error('Image not selected');
-            return null;
+            return;
         }
 
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("category", data.category);
-        formData.append("image", image);
-        const response = await axios.post(`${url}/api/food/add`, formData);
-        if (response.data.success) {
+        const formData = {
+            name: data.name,
+            description: data.description,
+            price: Number(data.price),
+            category: data.category,
+            img: image // Send the base64 image string
+        };
+
+        try {
+            setLoading(true);
+            const response = await axios.post(`${url}/api/food/add`, formData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (!response.data.success) {
+                toast.error(response.data.message)
+                return;
+            }
+
             toast.success(response.data.message)
             setData({
                 name: "",
@@ -38,10 +63,12 @@ const Add = () => {
                 price: "",
                 category: data.category
             })
-            setImage(false);
-        }
-        else {
-            toast.error(response.data.message)
+            setImage(null);
+
+        } catch (error) {
+            toast.error(error.message || 'Something went wrong');
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -57,9 +84,9 @@ const Add = () => {
             <form className='flex-col' onSubmit={onSubmitHandler}>
                 <div className='add-img-upload flex-col'>
                     <p>Upload image</p>
-                    <input onChange={(e) => { setImage(e.target.files[0]); e.target.value = '' }} type="file" accept="image/*" id="image" hidden />
-                    <label htmlFor="image">
-                        <img src={!image ? assets.upload_area : URL.createObjectURL(image)} alt="" />
+                    <input onChange={handleImgChange} className='img-upload' type="file" accept="image/*" id="image" hidden />
+                    <label htmlFor="image" className='label-image'>
+                        <img src={!image ? assets.upload_area : image} alt="" />
                     </label>
                 </div>
                 <div className='add-product-name flex-col'>
@@ -89,7 +116,7 @@ const Add = () => {
                         <input type="Number" name='price' onChange={onChangeHandler} value={data.price} placeholder='25' />
                     </div>
                 </div>
-                <button type='submit' className='add-btn' >ADD</button>
+                <button type='submit' className='add-btn' >{loading ? "...loading" : "ADD"}</button>
             </form>
         </div>
     )

@@ -50,7 +50,7 @@ const Menu = () => {
                     <div className='food-item' key={item._id}>
                         <div className='food-item-img-container'>
                             <span className='food-item-img-span'>
-                                <img className='food-item-img' src={url + "/images/" + item.image} alt="" />
+                                <img className='food-item-img' src={item.image} alt="" />
                             </span>
                             {!cartItems[item._id]
                                 ? <img className='add' onClick={() => addToCart(item._id)} src={assets.add_icon_white} alt="" />

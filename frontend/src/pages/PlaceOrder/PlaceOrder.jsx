@@ -16,9 +16,9 @@ const PlaceOrder = () => {
     email: "",
     street: "",
     city: "",
-    state: "",
+    state: "Madhya Pradesh",
     zipcode: "",
-    country: "",
+    country: "India",
     phone: ""
   })
 
@@ -45,6 +45,11 @@ const PlaceOrder = () => {
 
   const placeOrder = async (e) => {
     e.preventDefault()
+
+    if (data.phone.length !== 10) {
+      toast.error("Phone number must be exactly 10 digits");
+      return;
+    }
 
     let orderItems = [];
 
@@ -93,7 +98,7 @@ const PlaceOrder = () => {
       }
     }
   }
-  
+
   useEffect(() => {
     if (!token) {
       toast.error("To place an order sign in first")
@@ -104,7 +109,7 @@ const PlaceOrder = () => {
     }
   }, [token])
 
-  if(loader){
+  if (loader) {
     return <Loader />
   }
 
@@ -121,11 +126,11 @@ const PlaceOrder = () => {
         <input type="text" name='street' onChange={onChangeHandler} value={data.street} placeholder='Street' required />
         <div className="multi-field">
           <input type="text" name='city' onChange={onChangeHandler} value={data.city} placeholder='City' required />
-          <input type="text" name='state' onChange={onChangeHandler} value={data.state} placeholder='State' required />
+          <input type="text" name='state' onChange={onChangeHandler} value={data.state} placeholder='State' disabled />
         </div>
         <div className="multi-field">
           <input type="text" name='zipcode' onChange={onChangeHandler} value={data.zipcode} placeholder='Zip code' required />
-          <input type="text" name='country' onChange={onChangeHandler} value={data.country} placeholder='Country' required />
+          <input type="text" name='country' onChange={onChangeHandler} value={data.country} placeholder='Country' disabled />
         </div>
         <input type="text" name='phone' onChange={onChangeHandler} value={data.phone} placeholder='Phone' required />
       </div>
@@ -151,7 +156,7 @@ const PlaceOrder = () => {
             <p>Stripe ( Credit / Debit )</p>
           </div>
         </div>
-        <button className={`place-order-submit ${payment === "" ? "place-order-btn ": ""}`} type='submit'>{payment === "cod" ? "Place Order Via COD" : "Proceed To Payment"}</button>
+        <button className={`place-order-submit ${payment === "" ? "place-order-btn " : ""}`} type='submit'>{payment === "cod" ? "Place Order Via COD" : "Proceed To Payment"}</button>
       </div>
     </form>
   )

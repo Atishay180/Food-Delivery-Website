@@ -1,17 +1,19 @@
 import axios from 'axios';
 import React, { useContext, useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { StoreContext } from '../../context/StoreContext';
 import './Verify.css'
 import { toast } from 'react-toastify';
 
 const Verify = () => {
   const { url } = useContext(StoreContext)
-  const [searchParams, setSearchParams] = useSearchParams();
-  const success = searchParams.get("success")
-  const orderId = searchParams.get("orderId")
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const success = queryParams.get('success');
+  const orderId = queryParams.get('orderId');
 
   const verifyPayment = async () => {
     try {
@@ -36,8 +38,10 @@ const Verify = () => {
   }
 
   useEffect(() => {
-    verifyPayment();
-  }, [])
+    if (orderId) {
+      verifyPayment();
+    }
+  }, [orderId])
 
   return (
     <div className='verify'>

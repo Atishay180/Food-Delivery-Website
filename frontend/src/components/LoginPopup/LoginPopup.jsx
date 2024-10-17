@@ -4,7 +4,6 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 import { toast } from "react-toastify"
-import Loader from '../Loader/Loader'
 
 const LoginPopup = ({ setShowLogin }) => {
 
@@ -42,20 +41,16 @@ const LoginPopup = ({ setShowLogin }) => {
                 loadCartData({ token: response.data.token })
                 setShowLogin(false)
 
-                toast.success(response.data.message)
+                toast.success(response.data.message || "Login successful")
             }
             else {
-                toast.error(response.data.message)
+                toast.error(response.data.message || "Error while login")
             }
         } catch (error) {
             toast.error(error.message || "Error while login")
         } finally {
             setLoader(false)
         }
-    }
-
-    if (loader) {
-        return <Loader />
     }
 
     return (
@@ -70,10 +65,12 @@ const LoginPopup = ({ setShowLogin }) => {
                     <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Your email' required/>
                     <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
                 </div>
+
                 <button>{currState === "Login" ? "Login" : "Create account"}</button>
+
                 <div className="login-popup-condition">
                     <input type="checkbox" name="" id="" required />
-                    <p>By continuing, i agree to the terms of use & privacy policy.</p>
+                    <p>By continuing, i agree to the terms of use & <span>privacy policy</span>.</p>
                 </div>
                 {currState === "Login"
                     ? <p>Create a new account? <span onClick={() => setCurrState('Sign Up')}>Click here</span></p>

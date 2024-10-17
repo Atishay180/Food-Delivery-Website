@@ -17,7 +17,7 @@ const Orders = () => {
       toast.error("Error")
     }
   }
-  
+
   const statusHandler = async (event, orderId) => {
     const response = await axios.post(`${url}/api/order/status`, {
       orderId,
@@ -59,7 +59,7 @@ const Orders = () => {
               <p className='order-item-phone'>{order.address.phone}</p>
             </div>
             <p>Items : {order.items.length}</p>
-            <p>{currency}{order.amount}</p>
+            <p>{currency}{order.amount} {order.payment ? "(Paid)" : "(COD)"}</p>
             <select onChange={(e) => statusHandler(e, order._id)} value={order.status} name="" id="">
               <option value="Food Processing">Food Processing</option>
               <option value="Out for delivery">Out for delivery</option>

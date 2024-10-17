@@ -3,11 +3,20 @@ import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
 
   const { cartItems, food_list, removeFromCart, getTotalCartAmount, url, currency, deliveryCharge, loader } = useContext(StoreContext);
   const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    if (getTotalCartAmount() === 0) {
+      toast.error('Your cart is empty')
+      return;
+    }
+    navigate('/order');
+  } 
 
   if (loader) {
     return <Loader />
@@ -44,11 +53,16 @@ const Cart = () => {
           <div>
             <div className="cart-total-details"><p>Subtotal</p><p>{currency}{getTotalCartAmount()}</p></div>
             <hr />
-            <div className="cart-total-details"><p>Delivery Fee</p><p>{currency}{getTotalCartAmount() === 0 ? 0 : deliveryCharge}</p></div>
+            <div className="cart-total-details">
+              <p>Delivery Fee</p>
+              <p>{currency}{getTotalCartAmount() === 0 ? 0 :
+                getTotalCartAmount() > 499 ? 0 : deliveryCharge}
+              </p>
+            </div>
             <hr />
             <div className="cart-total-details"><b>Total</b><b>{currency}{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + deliveryCharge}</b></div>
           </div>
-          <button onClick={() => navigate('/order')}>PROCEED TO CHECKOUT</button>
+          <button onClick={handleOnClick}>PROCEED TO CHECKOUT</button>
         </div>
         <div className="cart-promocode">
           <div>

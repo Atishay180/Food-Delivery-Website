@@ -46,7 +46,9 @@ const PlaceOrder = () => {
   const placeOrder = async (e) => {
     e.preventDefault()
 
-    if (data.phone.length !== 10) {
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!phoneRegex.test(data.phone)) {
       toast.error("Phone number must be exactly 10 digits");
       return;
     }
@@ -67,33 +69,50 @@ const PlaceOrder = () => {
       amount: getTotalCartAmount() + deliveryCharge,
     }
 
+    // Stripe payment
     if (payment === "stripe") {
-      // setLoader(true);
-      // let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
-      // setLoader(false)
-      // if (response.data.success) {
-      //   const { session_url } = response.data;
-      //   window.location.replace(session_url);
-      // }
-      // else {
-      //   toast.error("Something Went Wrong")
-      // }
-      toast.error("Sorry currently we are accepting only cash on delivery")
-      return;
-    }
+      try {
+        setLoader(true);
+        let response = await axios.post(url + "/api/order/place", orderData, {
+          headers: { token }
+        });
 
-    else {
-      if (window.confirm("Are you sure want to place order via cash on delivery")) {
-        setLoader(true)
-        let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
-        setLoader(false)
         if (response.data.success) {
-          navigate("/myorders")
-          toast.success(response.data.message)
-          setCartItems({});
+          const { session_url } = response.data;
+          window.location.replace(session_url);
         }
         else {
-          toast.error("Something Went Wrong")
+          toast.error(response.data.message || "Something Went Wrong");
+          return;
+        }
+      } catch (error) {
+        toast.error(error.message || "Something Went Wrong");
+      } finally {
+        setLoader(false);
+      }
+    }
+
+    // COD
+    else {
+      if (window.confirm("Are you sure want to place order via cash on delivery")) {
+        try {
+          setLoader(true)
+          let response = await axios.post(url + "/api/order/placecod", orderData, { headers: { token } });
+          setLoader(false)
+
+          if (response.data.success) {
+            navigate("/myorders")
+            toast.success(response.data.message)
+            setCartItems({});
+          }
+          else {
+            toast.error(response.data.message || "Something Went Wrong")
+          }
+
+        } catch (error) {
+          toast.error(error.message || "Something Went Wrong")
+        } finally {
+          setLoader(false)
         }
       }
     }
@@ -115,6 +134,7 @@ const PlaceOrder = () => {
 
   return (
     <form onSubmit={placeOrder} className='place-order'>
+
       <div className="place-order-left">
         <p className='title'>Delivery Information</p>
 
@@ -134,6 +154,7 @@ const PlaceOrder = () => {
         </div>
         <input type="text" name='phone' onChange={onChangeHandler} value={data.phone} placeholder='Phone' required />
       </div>
+
       <div className="place-order-right">
         <div className="cart-total">
           <h2>Cart Totals</h2>
@@ -145,6 +166,7 @@ const PlaceOrder = () => {
             <div className="cart-total-details"><b>Total</b><b>{currency}{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + deliveryCharge}</b></div>
           </div>
         </div>
+
         <div className="payment">
           <h2>Payment Method</h2>
           <div onClick={() => setPayment("cod")} className={`payment-option ${payment === "cod" ? "payment-btn-color" : ""}`}>
@@ -156,7 +178,12 @@ const PlaceOrder = () => {
             <p>Stripe ( Credit / Debit )</p>
           </div>
         </div>
-        <button className={`place-order-submit ${payment === "" ? "place-order-btn " : ""}`} type='submit'>{payment === "cod" ? "Place Order Via COD" : "Proceed To Payment"}</button>
+
+        <button
+          className={`place-order-submit ${payment === "" ? "place-order-btn " : ""}`}
+          type='submit'>
+          {payment === "cod" ? "Place Order Via COD" : "Proceed To Payment"}
+        </button>
       </div>
     </form>
   )

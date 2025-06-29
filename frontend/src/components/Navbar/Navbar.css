@@ -30,16 +30,16 @@
     gap: 40px;
 }
 
-.navbar-search-icon{
-position: relative;
+.navbar-search-icon {
+    position: relative;
 }
 
-.navbar-search-icon:hover{
+.navbar-search-icon:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
 
-.navbar-search-icon .dot{
+.navbar-search-icon .dot {
     position: absolute;
     min-width: 10px;
     min-height: 10px;
@@ -49,48 +49,68 @@ position: relative;
     right: -8px;
 }
 
+#right-btn-div {
+    display: flex;
+    gap: 10px;
+}
+
 .navbar-right button {
     background: transparent;
     font-size: 16px;
     color: #49557E;
     border: 1px solid #FF4C24;
     padding: 10px 30px;
-    border-radius: 50px;
+    border-radius: 12px;
     cursor: pointer;
     transition: 0.3s;
+}
+
+.navbar-right #admin {
+    background-color: #e4721c;
+    color: white;
+}
+
+.navbar-right #admin:hover {
+    background-color: #FF4C24;
 }
 
 .navbar-right button:hover {
     background: #fff4f2;
 }
 
-.navbar-profile{
+.navbar-profile {
     position: relative;
 
 }
-.navbar-profile:hover{
+
+.navbar-profile:hover {
     transform: scale(1.1);
     cursor: pointer;
 
 }
-.navbar-profile-dropdown{
+
+.navbar-profile-dropdown {
     position: absolute;
     display: none;
     right: 0;
 }
-.navbar-profile-dropdown li{
+
+.navbar-profile-dropdown li {
     display: flex;
     align-items: center;
     gap: 10px;
     cursor: pointer;
 }
-.navbar-profile-dropdown img{
+
+.navbar-profile-dropdown img {
     width: 20px;
 }
-.navbar-profile-dropdown li:hover{
+
+.navbar-profile-dropdown li:hover {
     color: #FF4C24;
 }
-.navbar-profile:hover .navbar-profile-dropdown{
+
+.navbar-profile:hover .navbar-profile-dropdown {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -101,11 +121,13 @@ position: relative;
     outline: 2px solid white;
     list-style: none;
 }
-.navbar-profile hr{
+
+.navbar-profile hr {
     background-color: gray;
     height: 1px;
     border: none;
 }
+
 @media (max-width:1050px) {
     .navbar .logo {
         width: 140px;
@@ -156,5 +178,12 @@ position: relative;
 @media (max-width:750px) {
     .navbar-menu {
         display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar-right button {
+        padding: 5px 10px;
+        font-size: 9px;
     }
 }

@@ -6,11 +6,13 @@ import { toast } from "react-toastify"
 
 const StoreContextProvider = (props) => {
 
-    const url = import.meta.env.VITE_API_URL || "http://localhost:4000"
+    // const url = import.meta.env.VITE_API_URL || "http://localhost:4000"
+    const url = "http://localhost:4000"
     const [food_list, setFoodList] = useState([]);
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
     const [loader, setLoader] = useState(false);
+    const [serverAwake, setServerAwake] = useState(false);
     const [menu, setMenu] = useState("home");
     const currency = "₹";
     const deliveryCharge = 50;
@@ -63,9 +65,17 @@ const StoreContextProvider = (props) => {
 
     const fetchFoodList = async () => {
         setLoader(true);
-        const response = await axios.get(url + "/api/food/list");
-        setFoodList(response.data.data)
-        setLoader(false);
+        try {
+            const { data } = await axios.get(url + "/api/food/list");
+            setFoodList(data.data)
+            setServerAwake(true);
+        } catch (error) {
+            console.error("Failed to fetch food list", error.message);
+            toast.error(error.response?.data?.message || error.message || "Something Went Wrong")
+            setServerAwake(false);
+        } finally {
+            setLoader(false);
+        }
     }
 
     const loadCartData = async (token) => {
@@ -110,7 +120,8 @@ const StoreContextProvider = (props) => {
         loader,
         setLoader,
         menu,
-        setMenu
+        setMenu,
+        serverAwake
     };
 
     return (

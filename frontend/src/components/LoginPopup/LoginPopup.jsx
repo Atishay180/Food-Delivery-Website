@@ -60,10 +60,25 @@ const LoginPopup = ({ setShowLogin }) => {
                     <h2>{currState}</h2>
                     <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
                 </div>
+
                 <div className="login-popup-inputs">
                     {currState === "Sign Up" ? <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Your name' required /> : <></>}
-                    <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Your email' required />
-                    <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
+
+                    <input
+                        name='email'
+                        onChange={onChangeHandler}
+                        value={data.email} type="email"
+                        placeholder={`${currState === 'Sign Up' ? 'Enter Email' : 'Enter "test3@gmail.com" as Email'}`}
+                        required
+                    />
+
+                    <input
+                        name='password'
+                        onChange={onChangeHandler}
+                        value={data.password} type="password"
+                        placeholder={`${currState === 'Sign Up' ? 'Enter Password' : 'Enter "Test1234" as Password'}`}
+                        required
+                    />
                 </div>
 
                 {loader ?
@@ -76,6 +91,7 @@ const LoginPopup = ({ setShowLogin }) => {
                     <input type="checkbox" name="" id="" required />
                     <p>By continuing, i agree to the terms of use & <span>privacy policy</span>.</p>
                 </div>
+
                 {currState === "Login"
                     ? <p>Create a new account? <span onClick={() => setCurrState('Sign Up')}>Click here</span></p>
                     : <p>Already have an account? <span onClick={() => setCurrState('Login')}>Login here</span></p>
